@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { PropsWithChildren, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
 type Gender = 'male' | 'female' | 'other'
@@ -10,8 +10,25 @@ type FormType = {
   gender: Gender
 }
 
+function ErrorMessage({ children }: PropsWithChildren) {
+  return (
+    <p
+      style={{
+        color: 'red',
+      }}
+    >
+      {children}
+    </p>
+  )
+}
+
 function App() {
-  const { register, handleSubmit, watch } = useForm<FormType>()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormType>()
 
   const password = useRef<string>()
 
@@ -28,6 +45,9 @@ function App() {
         <input
           {...register('name', { required: true, minLength: 2, maxLength: 10 })}
         />
+        {errors.name && errors.name.type === 'required' && (
+          <ErrorMessage>이름을 입력해주세요</ErrorMessage>
+        )}
 
         <div>비밀번호</div>
         <input
@@ -39,15 +59,24 @@ function App() {
             pattern: /^[a-zA-Z0-9]*$/,
           })}
         />
+        {errors.password && errors.password.type === 'required' && (
+          <ErrorMessage>비밀번호를 입력해주세요</ErrorMessage>
+        )}
 
         <div>비밀번호 확인</div>
         <input
           type='password'
           {...register('passwordConfirm', {
             required: true,
-            validate: (value) => value === password.current,
+            validate: {
+              samePassword: (value) => value === password.current,
+            },
           })}
         />
+        {errors.passwordConfirm &&
+          errors.passwordConfirm.type === 'samePassword' && (
+            <ErrorMessage>비밀번호가 일치하지 않습니다</ErrorMessage>
+          )}
 
         <div>성별</div>
         <select {...register('gender', { required: true })}>
@@ -56,6 +85,9 @@ function App() {
           <option value='female'>여성</option>
           <option value='other'>미공개</option>
         </select>
+        {errors.gender && errors.gender.type === 'required' && (
+          <ErrorMessage>성별을 선택해주세요</ErrorMessage>
+        )}
 
         <div>
           <button type='submit'>제출</button>
