@@ -1,5 +1,6 @@
 import { PropsWithChildren, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import ReactHookFormWithZod from './ReactHookFormWithZod'
 
 type Gender = 'male' | 'female' | 'other'
 
@@ -40,6 +41,10 @@ function App() {
 
   return (
     <main>
+      <ReactHookFormWithZod />
+
+      <hr />
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>이름</div>
         <input
