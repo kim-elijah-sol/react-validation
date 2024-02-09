@@ -29,9 +29,11 @@ const schema = z
       .max(10, { message: '이름은 최대 10글자까지 입력 가능해요.' }),
     password: z
       .string()
-      .min(6)
-      .max(12)
-      .regex(/^[a-zA-Z0-9]*$/),
+      .min(6, { message: '비밀번호는 6글자 이상 입력해주세요.' })
+      .max(12, { message: '비밀번호는 최대 12글자까지 입력 가능해요.' })
+      .regex(/^[a-zA-Z0-9]*$/, {
+        message: '비밀번호는 영문과 숫자만 입력 가능해요.',
+      }),
     passwordConfirm: z
       .string()
       .min(6)
@@ -61,6 +63,12 @@ function ReactHookFormWithZod() {
       <input {...register('name')} />
       {errors.name?.message && (
         <ErrorMessage>{errors.name.message}</ErrorMessage>
+      )}
+
+      <div>비밀번호</div>
+      <input type='password' {...register('password')} />
+      {errors.password?.message && (
+        <ErrorMessage>{errors.password.message}</ErrorMessage>
       )}
 
       <div>
