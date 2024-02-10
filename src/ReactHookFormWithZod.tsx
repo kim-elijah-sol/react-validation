@@ -57,6 +57,8 @@ function ReactHookFormWithZod() {
     resolver: zodResolver(schema),
   })
 
+  console.log(errors)
+
   return (
     <form onSubmit={handleSubmit((e) => console.log(e))}>
       <div>이름</div>
@@ -69,6 +71,23 @@ function ReactHookFormWithZod() {
       <input type='password' {...register('password')} />
       {errors.password?.message && (
         <ErrorMessage>{errors.password.message}</ErrorMessage>
+      )}
+
+      <div>비밀번호 확인</div>
+      <input type='password' {...register('passwordConfirm')} />
+      {errors.passwordConfirm?.message && (
+        <ErrorMessage>{errors.passwordConfirm.message}</ErrorMessage>
+      )}
+
+      <div>성별</div>
+      <select {...register('gender')}>
+        <option value=''>성별 선택</option>
+        <option value='male'>남성</option>
+        <option value='female'>여성</option>
+        <option value='other'>미공개</option>
+      </select>
+      {errors.gender?.message && (
+        <ErrorMessage>{errors.gender.message}</ErrorMessage>
       )}
 
       <div>
