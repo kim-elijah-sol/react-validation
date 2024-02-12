@@ -1,6 +1,7 @@
 import { PropsWithChildren, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import ReactHookFormWithZod from './ReactHookFormWithZod'
+import ReactHookFormWithYup from './ReactHookFormWithYup'
 
 type Gender = 'male' | 'female' | 'other'
 
@@ -41,6 +42,10 @@ function App() {
 
   return (
     <main>
+      <ReactHookFormWithYup />
+
+      <hr />
+
       <ReactHookFormWithZod />
 
       <hr />
